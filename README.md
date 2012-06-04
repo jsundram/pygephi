@@ -1,7 +1,7 @@
 pygephi
 =======
 
-Drive gephi via the toolkit api to do some graph layout and saving.
+Drive gephi in jython via the toolkit api to do some graph layout and saving.
 Usage:
     gephi.py input.gexf output.gexf
 
