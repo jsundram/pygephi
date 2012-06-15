@@ -73,14 +73,18 @@ def show():
     frame.setVisible(True)
 
 def adjust_sizes(nodes, attribute="in_degree", scale=None):
-    if not scale:
-        scale = lambda f : f
     node_attributes = nodes[0].getNodeData().attributes.values
     ix = [v.column.title for v in node_attributes].index(attribute)
+
+    if not scale:
+        m = max([n.getNodeData().attributes.values[ix].value for n in nodes])
+        scale = lambda f : m-f
+
     for node in nodes:
         node_data = node.getNodeData()
         value = float(node_data.attributes.values[ix].value)
         node_data.setSize(1 + scale(value)) # avoid problem with 0 sizes
+        # print "changed %s size from %s to %s" % (node_data.getLabel(), value, (1 + scale(value)))
 
 def layout(graph_file='./graph.gexf', out_gexf='./new_graph.gexf', layout=True, save_pdf=True, save_gephi=False):
     print "loading graph"
@@ -175,7 +179,6 @@ def layout(graph_file='./graph.gexf', out_gexf='./new_graph.gexf', layout=True, 
 if __name__ == '__main__':
     # from optparse import OptionParser
     # parser = OptionParser()
-    
     try:
         layout(sys.argv[1], sys.argv[2])
     except IndexError:
